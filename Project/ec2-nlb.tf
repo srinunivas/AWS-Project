@@ -7,16 +7,11 @@ module "private_ec2_windows1" {
   image_id                    = "ami-02db44a38cfb5d753"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = false
-
-  instance_name = {
-    Name = "Private-Instance-Windows-NLB-1"
-  }
+  instance_name = "ec2-nlb-pri-web-001"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.private_subnet_id_1
   sg_id         = module.vpc.default_security_group_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = false
@@ -55,6 +50,10 @@ module "private_ec2_windows1" {
   EOF
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "private_ec2_windows1_id" {
@@ -70,16 +69,11 @@ module "private_ec2_windows2" {
   image_id                    = "ami-02db44a38cfb5d753"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = false
-
-  instance_name = {
-    Name = "Private-Instance-Windows-NLB-2"
-  }
+  instance_name = "ec2-nlb-pri-web-002"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.private_subnet_id_1
   sg_id         = module.vpc.default_security_group_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = true
@@ -120,6 +114,10 @@ module "private_ec2_windows2" {
   EOF
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "private_ec2_windows2_id" {
@@ -135,16 +133,11 @@ module "public_ec2_windows1" {
   image_id                    = "ami-02db44a38cfb5d753"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = true
-
-  instance_name = {
-    Name = "Public-Instance-Windows-NLB-1"
-  }
+  instance_name = "ec2-nlb-pub-web-003"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.public_subnet_id_1
   sg_id         = module.security_group.sg_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = false
@@ -186,6 +179,10 @@ module "public_ec2_windows1" {
   EOF
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "public_ec2_windows1_id" {
@@ -201,16 +198,11 @@ module "public_ec2_windows2" {
   image_id                    = "ami-02db44a38cfb5d753"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = true
-
-  instance_name = {
-    Name = "Public-Instance-Windows-NLB-2"
-  }
+  instance_name = "ec2-nlb-pub-web-004"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.public_subnet_id_1
   sg_id         = module.security_group.sg_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = true
@@ -254,6 +246,10 @@ module "public_ec2_windows2" {
   EOF
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "public_ec2_windows2_id" {

@@ -18,7 +18,11 @@ module "aws_asg__launch_template" {
   subnet_id                             = module.vpc.public_subnet_id_1
   resource_type_tags                    = "instance"
   cw_monitoring                         = true
-  tags                                  = local.tags
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 
   asg_name                = "testing-asg"
   vpc_zone_identifier     = [module.vpc.public_subnet_id_1]

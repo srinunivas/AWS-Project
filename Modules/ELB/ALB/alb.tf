@@ -1,18 +1,17 @@
-# Create Application Load Balancer
 resource "aws_lb" "my_alb" {
-  name               = var.alb_name
+  name               = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.alb_name}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = var.security_groups
-  subnets            = var.subnet_ids # Specify your subnets
+  subnets            = var.subnet_ids
 }
 
 resource "aws_lb_listener" "front_end" {
   for_each = var.target_groups_listener
 
   load_balancer_arn = aws_lb.my_alb.arn
-  port              = each.value.port     
-  protocol          = each.value.protocol 
+  port              = each.value.port
+  protocol          = each.value.protocol
 
   default_action {
     type             = "forward"
@@ -20,37 +19,31 @@ resource "aws_lb_listener" "front_end" {
   }
 }
 
-# Create a target group for ALB
 resource "aws_lb_target_group" "my_target_group" {
   for_each = var.target_groups_listener
 
-  name     = "${var.alb_name}-tg"        
-  port     = each.value.targetgroup_port #80
-  protocol = each.value.protocol         #"HTTP"
-  vpc_id   = var.vpc_id                  #"vpc-0141944e034523154"  # Specify your VPC ID
+  name     = "${var.alb_name}-tg"
+  port     = each.value.targetgroup_port
+  protocol = each.value.protocol
+  vpc_id   = var.vpc_id
 
   health_check {
-    path                = each.value.health_check.path                #"/"
-    protocol            = each.value.health_check.protocol            #"HTTP"
-    port                = each.value.health_check.port                #80
-    healthy_threshold   = each.value.health_check.healthy_threshold   #2
-    unhealthy_threshold = each.value.health_check.unhealthy_threshold #2
-    timeout             = each.value.health_check.timeout             #3
-    interval            = each.value.health_check.interval            #30
+    path                = each.value.health_check.path
+    protocol            = each.value.health_check.protocol
+    port                = each.value.health_check.port
+    healthy_threshold   = each.value.health_check.healthy_threshold
+    unhealthy_threshold = each.value.health_check.unhealthy_threshold
+    timeout             = each.value.health_check.timeout
+    interval            = each.value.health_check.interval
   }
 }
 
-# Register the EC2 instance as a target with ALB target group
 resource "aws_lb_target_group_attachment" "my_target_attachment" {
-  count = length(local.target_group_attachments)
+  count            = length(local.target_group_attachments)
   target_group_arn = local.target_group_attachments[count.index].target_group_arn
-  target_id        = local.target_group_attachments[count.index].target 
-  port             = 80                
+  target_id        = local.target_group_attachments[count.index].target
+  port             = 80
 }
-
-#---------------------
-# Locals
-#---------------------
 
 locals {
 
@@ -65,6 +58,3 @@ locals {
   ])
 }
 
-#------------------
-# data
-#--------------------

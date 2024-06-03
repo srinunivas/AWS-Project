@@ -1,5 +1,5 @@
 resource "aws_iam_user" "user" {
-  name = var.iam_user_name
+  name = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.iam_user_name}"
   path = var.user_path
 
   tags = var.tags

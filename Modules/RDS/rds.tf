@@ -5,10 +5,10 @@ resource "aws_db_subnet_group" "rds_subnets" {
 }
 
 resource "aws_db_instance" "rds_instance" {
-  identifier               = var.database_instance.name
+  identifier               = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.database_instance.name}"
   replicate_source_db      = var.database_instance.replicate_source_db_identifier
   allocated_storage        = var.database_instance.storage
-  db_name                  = local.db_name
+  db_name                  = var.database_instance.db_name
   engine                   = var.database_instance.engine_type
   engine_version           = var.database_instance.engine_version
   port                     = var.database_instance.database_listen_port
@@ -18,10 +18,10 @@ resource "aws_db_instance" "rds_instance" {
   multi_az                 = var.database_instance.multi_az
   db_subnet_group_name     = aws_db_subnet_group.rds_subnets.name
   vpc_security_group_ids   = [aws_security_group.rds_security_group.id]
-  publicly_accessible      = var.database_instance.publicly_accessible #false
+  publicly_accessible      = var.database_instance.publicly_accessible
   skip_final_snapshot      = var.database_instance.skip_final_snapshot
   apply_immediately        = var.database_instance.apply_immediately
-  storage_encrypted        = var.database_instance.storage_encrypted #true
+  storage_encrypted        = var.database_instance.storage_encrypted
   license_model            = local.license_model
   backup_window            = var.database_instance.database_backup_window
   delete_automated_backups = var.database_instance.delete_automated_backups
@@ -31,7 +31,7 @@ resource "aws_db_instance" "rds_instance" {
   monitoring_interval                 = local.monitoring_interval
   auto_minor_version_upgrade          = var.database_instance.enable_minor_version_upgrade
   iam_database_authentication_enabled = var.database_instance.iam_database_authentication_enabled
-  copy_tags_to_snapshot = true
+  copy_tags_to_snapshot               = true
 
   blue_green_update {
     enabled = local.blue_green_update_enabled
@@ -51,8 +51,6 @@ resource "aws_db_instance" "rds_instance" {
     aws_security_group.rds_security_group
   ]
 }
-
-
 
 resource "aws_db_parameter_group" "db_pram" {
   name   = local.database_parameter_group_name

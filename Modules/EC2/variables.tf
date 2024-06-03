@@ -1,4 +1,18 @@
-# EC2
+variable "org_name" {
+  type = string
+}
+
+variable "project_name" {
+  type = string
+}
+
+variable "env" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
 
 variable "image_id" {
   description = "Amazon Machine Image id"
@@ -43,7 +57,7 @@ variable "instance_type" {
 
 variable "instance_name" {
   description = "EC2 instance name"
-  type        = map(string)
+  type        = string
 }
 
 variable "subnet_id" {

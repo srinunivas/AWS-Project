@@ -1,3 +1,19 @@
+variable "org_name" {
+  type = string
+}
+
+variable "project_name" {
+  type = string
+}
+
+variable "env" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
 variable "database_subnet_ids" {
   description = "List of subnet ids that the database should associated with."
   type        = list(string)
@@ -37,6 +53,7 @@ variable "database_instance" {
     engine_type                         = optional(string)
     engine_version                      = optional(string)
     instance_class                      = optional(string)
+    db_name                             = optional(string)
     storage                             = optional(number)
     username                            = optional(string, "admin")
     multi_az                            = optional(bool, false)

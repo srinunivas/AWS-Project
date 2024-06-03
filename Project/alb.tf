@@ -7,10 +7,10 @@ module "alb_ec2_public" {
 
   depends_on = [module.public_ec2_linux1, module.public_ec2_linux1]
 
-  alb_name        = "ec2-alb-public-testing"
-  vpc_id          = module.vpc.vpc_id                                
+  alb_name        = "a1"
+  vpc_id          = module.vpc.vpc_id
   subnet_ids      = [module.vpc.public_subnet_id_1, module.vpc.public_subnet_id_2]
-  security_groups = [module.security_group.sg_id]                              
+  security_groups = [module.security_group.sg_id]
 
   target_groups_listener = {
     target-group2 = {
@@ -28,8 +28,12 @@ module "alb_ec2_public" {
       targets = [module.public_ec2_linux1.instance_id, module.public_ec2_linux2.instance_id]
     }
   }
-  
+
   tags = local.tags
+  org_name = "Safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 #-------------------------------------------------------------
@@ -41,10 +45,10 @@ module "alb_ec2_private" {
 
   depends_on = [module.private_ec2_linux1, module.private_ec2_linux2]
 
-  alb_name        = "ec2-alb-private-testing"
-  vpc_id          = module.vpc.vpc_id 
+  alb_name        = "a2"
+  vpc_id          = module.vpc.vpc_id
   subnet_ids      = [module.vpc.private_subnet_id_1, module.vpc.private_subnet_id_2]
-  security_groups = [module.vpc.default_security_group_id] 
+  security_groups = [module.vpc.default_security_group_id]
 
   target_groups_listener = {
     target-group2 = {
@@ -59,11 +63,15 @@ module "alb_ec2_private" {
       listeners = {
         port = 80
       }
-      targets = [module.private_ec2_linux1.instance_id, module.private_ec2_linux2.instance_id] 
+      targets = [module.private_ec2_linux1.instance_id, module.private_ec2_linux2.instance_id]
     }
   }
-  
+
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 

@@ -28,5 +28,11 @@ resource "aws_instance" "instance" {
   }
 
   user_data = var.user_data
-  tags      = merge(var.tags, var.instance_name)
+  tags      = merge(var.tags, local.instance_name)
+}
+
+locals {
+  instance_name = {
+    Name = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.instance_name}"
+  }
 }

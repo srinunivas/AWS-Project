@@ -6,16 +6,11 @@ module "private_ec2_linux1" {
   image_id                    = "ami-0b8b44ec9a8f90422"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = false
-
-  instance_name = {
-    Name = "Private-Instance-Linux-ALB-1"
-  }
+  instance_name = "ec2-alb-pri-web-001"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.private_subnet_id_1
   sg_id         = module.vpc.default_security_group_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = true
@@ -65,7 +60,12 @@ module "private_ec2_linux1" {
   </body>
   </html>" | sudo tee /var/www/html/index.html
   EOF
-  tags      = local.tags
+
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "private_ec2_linux1_id" {
@@ -81,16 +81,11 @@ module "private_ec2_linux2" {
   image_id                    = "ami-0b8b44ec9a8f90422"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = false
-
-  instance_name = {
-    Name = "Private-Instance-Linux-ALB-2"
-  }
+  instance_name = "ec2-alb-pri-web-002"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.private_subnet_id_1
   sg_id         = module.vpc.default_security_group_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = true
@@ -142,7 +137,12 @@ module "private_ec2_linux2" {
   </body>
   </html>" | sudo tee /var/www/html/index.html
   EOF
-  tags      = local.tags
+
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 
 }
 
@@ -158,16 +158,11 @@ module "public_ec2_linux1" {
   image_id                    = "ami-0b8b44ec9a8f90422"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = false
-
-  instance_name = {
-    Name = "Public-Instance-Linux-ALB-1"
-  }
+  instance_name = "ec2-alb-pub-web-003"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.public_subnet_id_1
   sg_id         = module.security_group.sg_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = true
@@ -225,7 +220,11 @@ module "public_ec2_linux1" {
   wget -O /mnt/ebs/PII-sample-data.pdf "https://dlptest.com/sample-data.pdf"
   EOF
 
-  tags      = local.tags
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 
 }
 
@@ -241,16 +240,11 @@ module "public_ec2_linux2" {
   image_id                    = "ami-0b8b44ec9a8f90422"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = true
-
-  instance_name = {
-    Name = "Public-Instance-Linux-ALB-2"
-  }
+  instance_name = "ec2-alb-pub-web-004"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.public_subnet_id_1
   sg_id         = module.security_group.sg_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = true
@@ -307,8 +301,12 @@ module "public_ec2_linux2" {
   echo "This is some example data for file1." > /mnt/ebs/Sample.txt 
   wget -O /mnt/ebs/PII-sample-data.pdf "https://dlptest.com/sample-data.pdf"
   EOF
-  
-  tags      = local.tags
+
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 
 }
 

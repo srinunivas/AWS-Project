@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "web_config_static_page" {
 module "s3_pubic_default_kms" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-public-default-kms-00"
+  bucket_name             = "s3-data-001"
   force_destroy           = true
   block_public_acls       = false
   block_public_policy     = false
@@ -77,9 +77,13 @@ module "s3_pubic_default_kms" {
   }
   s3_object = {
     enabled = true
-    source = "./files/sample-data"
+    source  = "./files/sample-data"
   }
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 # #-------------------------------------------------------------
@@ -88,7 +92,7 @@ module "s3_pubic_default_kms" {
 module "s3_private_default_kms" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-private-default-kms"
+  bucket_name             = "s3-data-002"
   force_destroy           = true
   block_public_acls       = true
   block_public_policy     = true
@@ -105,6 +109,10 @@ module "s3_private_default_kms" {
   }
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 # #-------------------------------------------------------------
@@ -113,7 +121,7 @@ module "s3_private_default_kms" {
 module "s3_private_cmk_kms" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-private-cmk-kms-00"
+  bucket_name             = "s3-data-003"
   force_destroy           = true
   block_public_acls       = true
   block_public_policy     = true
@@ -131,6 +139,10 @@ module "s3_private_cmk_kms" {
   }
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 # #-------------------------------------------------------------
@@ -139,7 +151,7 @@ module "s3_private_cmk_kms" {
 module "s3_public_cmk_kms" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-public-cmk-kms-00"
+  bucket_name             = "s3-data-004"
   force_destroy           = true
   block_public_acls       = false
   block_public_policy     = false
@@ -156,27 +168,16 @@ module "s3_public_cmk_kms" {
     kms_arn                  = module.kms-s3.kms_arn
   }
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 
   s3_object = {
     enabled = true
     source  = "./files/hipaa-dlp-test-files-master"
   }
 }
-
-# resource "aws_s3_object" "upload_multiple_s3_project" {
-#   bucket = module.s3_public_cmk_kms.s3_bucket_id
-#   key    = each.key
-#   #source = var.s3_object.source
-#   #acl    = "public-read"
-#   #content_type = var.upload_multiple_s3_project.content_type
-#   #etag = filemd5(var.s3_object.source)
-#   for_each = fileset("${path.module}/files/hipaa-dlp-test-files-master", "**")#fileset(var.upload_multiple_s3_project.source, "**/*")
-  
-#   source = "${path.module}/files/hipaa-dlp-test-files-master/${each.value}"
-#   etag   = filemd5("${path.module}/files/hipaa-dlp-test-files-master/${each.value}")
-
-# }
-
 #-------------------------------------------------------------
 #                   S3 - Private - Grant Permission - Default KMS
 #-------------------------------------------------------------
@@ -184,26 +185,30 @@ module "s3_public_cmk_kms" {
 module "s3_private_grant_permission" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-private-grant-default-kms"
+  bucket_name             = "s3-data-005"
   force_destroy           = true
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-  versioning_status = "Enabled"
+  versioning_status       = "Enabled"
   bucket_policy = {
     attach_policy = true
     policy        = data.aws_iam_policy_document.grant_permissions.json
   }
   attach_access_control_policy = true
-  object_ownership = "ObjectWriter"
-  grant_permissions = ["READ", "WRITE"]
+  object_ownership             = "ObjectWriter"
+  grant_permissions            = ["READ", "WRITE"]
 
   sse_configuration = {
     attach_sse_configuration = true
     sse_algorithm            = "AES256"
   }
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 # #-------------------------------------------------------------
@@ -212,7 +217,7 @@ module "s3_private_grant_permission" {
 module "s3_public_cmk_dsse_kms" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-public-cmk-dsse-kms"
+  bucket_name             = "s3-data-006"
   force_destroy           = true
   block_public_acls       = false
   block_public_policy     = false
@@ -230,9 +235,13 @@ module "s3_public_cmk_dsse_kms" {
   }
   s3_object = {
     enabled = true
-    source = "./files/patients"
+    source  = "./files/patients"
   }
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 # #-------------------------------------------------------------
@@ -241,7 +250,7 @@ module "s3_public_cmk_dsse_kms" {
 module "s3_private_cmk_dsse_kms" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-bucket-private-cmk-dsse-kms"
+  bucket_name             = "s3-data-007"
   force_destroy           = true
   block_public_acls       = true
   block_public_policy     = true
@@ -259,6 +268,10 @@ module "s3_private_cmk_dsse_kms" {
   }
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 #-------------------------------------------------------------
@@ -267,7 +280,7 @@ module "s3_private_cmk_dsse_kms" {
 # module "s3_private_default_kms_mfa" {
 #   source = "../Modules/S3"
 
-#   bucket_name             = "s3-private-default-kms-mfa"
+#   bucket_name             = "s3-data-008"
 #   force_destroy           = true
 #   block_public_acls       = false
 #   block_public_policy     = false
@@ -299,7 +312,7 @@ module "s3_private_cmk_dsse_kms" {
 module "s3_private_default_kms_static_page" {
   source = "../Modules/S3"
 
-  bucket_name             = "s3-public-default-kms-static-web-page"
+  bucket_name             = "s3-data-009"
   force_destroy           = true
   block_public_acls       = false
   block_public_policy     = false
@@ -310,19 +323,18 @@ module "s3_private_default_kms_static_page" {
     attach_policy = false
   }
   attach_access_control_policy = true
-  object_ownership = "BucketOwnerPreferred"
-  grant_permissions = ["FULL_CONTROL"]
-  versioning_status = "Enabled"
-  version_enabled   = true
+  object_ownership             = "BucketOwnerPreferred"
+  grant_permissions            = ["FULL_CONTROL"]
+  versioning_status            = "Enabled"
+  version_enabled              = true
   sse_configuration = {
     attach_sse_configuration = true
-    sse_algorithm            = "AES256"#"aws:kms"
-    #kms_arn                  = module.kms-s3.kms_arn
+    sse_algorithm            = "AES256"
   }
   s3_object = {
-    enabled = true
-    acl     = "public-read"
-    source  = "./files/static-page"
+    enabled      = true
+    acl          = "public-read"
+    source       = "./files/static-page"
     content_type = "text/html"
   }
 
@@ -333,4 +345,8 @@ module "s3_private_default_kms_static_page" {
   }
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }

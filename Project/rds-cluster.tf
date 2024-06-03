@@ -10,29 +10,29 @@ module "aurora_cluster" {
   rds_subnet_group_name = "rds_aurora_cluster_db_subnet_group"
 
   database_cluster = {
-    create_rds_cluster        = true
-    cluster_identifier        = "rdsauroradbcluster"
-    engine                    = "aurora-postgresql"
-    engine_version            = "15.4"
-    availability_zones        = ["us-east-2a", "us-east-2b", "us-east-2c"]
-    master_username           = "root"
-    master_password           = "admin123"
-    kms_key_id                = module.kms-public.kms_arn
-    storage_encrypted         = true
-    skip_final_snapshot       = true
-    backup_retention_period   = 7
-    security_group_id         = module.rds_security_group.sg_id
+    create_rds_cluster      = true
+    cluster_identifier      = "rds-auroradbcluster"
+    engine                  = "aurora-postgresql"
+    engine_version          = "15.4"
+    availability_zones      = ["us-east-2a", "us-east-2b", "us-east-2c"]
+    master_username         = "root"
+    master_password         = "admin123"
+    kms_key_id              = module.kms-public.kms_arn
+    storage_encrypted       = true
+    skip_final_snapshot     = true
+    backup_retention_period = 7
+    security_group_id       = module.rds_security_group.sg_id
   }
 
   cluster_instance = {
-    identifier              = "aurora-cluster-demo"
+    identifier                      = "aurora-cluster-demo"
     instance_class                  = "db.t3.medium"
     performance_insights_kms_key_id = module.kms-rds.kms_arn
     performance_insights_enabled    = true
   }
-  cluster_instance_count =3
-  security_group_name = "rdsauroradbcluster-SG"
-  
+  cluster_instance_count = 3
+  security_group_name    = "rds-auroradbcluster-sg"
+
   ingresses = [
     {
       description = "Postgres port"
@@ -53,13 +53,11 @@ module "aurora_cluster" {
     }
   ]
 
-  tags = {
-    Bu                  = "Take off"
-    App                 = "dspm"
-    Env                 = "dev/test/qa"
-    Owner               = "Dspm"
-    Data_classification = "private"
-  }
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 # #-------------------------------------------------------------
@@ -74,9 +72,9 @@ module "mysql_cluster" {
   rds_subnet_group_name = "rds_sql-cluster_db_subnet_group"
 
   database_cluster = {
-    cluster_identifier = "rdsmysqltestdbcluster"
-    engine             = "mysql"
-    engine_version     = "8.0"
+    cluster_identifier        = "rds-mysqldbcluster"
+    engine                    = "mysql"
+    engine_version            = "8.0"
     availability_zones        = ["us-east-2a", "us-east-2b", "us-east-2c"]
     master_username           = "admin"
     master_password           = "admin123"
@@ -91,7 +89,7 @@ module "mysql_cluster" {
     cluster_instance_count = 0
   }
 
-  security_group_name = "rdsmysqltestdbcluster-SG"
+  security_group_name = "rds-mysqldbcluster-sg"
   ingresses = [
     {
       description = "Any port"
@@ -112,11 +110,9 @@ module "mysql_cluster" {
     }
   ]
 
-  tags = {
-    Bu                  = "Take off"
-    App                 = "dspm"
-    Env                 = "dev/test/qa"
-    Owner               = "Dspm"
-    Data_classification = "private"
-  }
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }

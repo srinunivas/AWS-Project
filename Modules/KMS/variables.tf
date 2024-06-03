@@ -1,6 +1,21 @@
+variable "org_name" {
+  type = string
+}
+
+variable "project_name" {
+  type = string
+}
+
+variable "env" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
 variable "primary_key" {
   type = object({
-    alias                    = string
     customer_master_key_spec = optional(string, "SYMMETRIC_DEFAULT")
     deletion_window_in_days  = optional(number, 30)
     description              = optional(string, null)

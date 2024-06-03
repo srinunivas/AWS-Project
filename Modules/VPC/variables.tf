@@ -1,5 +1,21 @@
+variable "org_name" {
+  type = string
+}
+
+variable "project_name" {
+  type = string
+}
+
+variable "env" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
 variable "vpc_name" {
-  type = map(string)
+  type = string
 }
 
 variable "vpc_cidr_block" {
@@ -8,31 +24,31 @@ variable "vpc_cidr_block" {
 }
 
 variable "igw_name" {
-  type = map(string)
+  type = string
 }
 
 variable "public_subnet_name_1" {
-  type = map(string)
+  type = string
 }
 
 variable "public_subnet_name_2" {
-  type = map(string)
+  type = string
 }
 
 variable "public_subnet_name_3" {
-  type = map(string)
+  type = string
 }
 
 variable "private_subnet_name_1" {
-  type = map(string)
+  type = string
 }
 
 variable "private_subnet_name_2" {
-  type = map(string)
+  type = string
 }
 
 variable "private_subnet_name_3" {
-  type = map(string)
+  type = string
 }
 
 variable "public_subnet_1_cidr_block" {
@@ -72,19 +88,19 @@ variable "subnet_3_availability_zone" {
 }
 
 variable "eip_name" {
-  type = map(string)
+  type = string
 }
 
 variable "nat_gateway_name" {
-  type = map(string)
+  type = string
 }
 
 variable "public_rt_name" {
-  type = map(string)
+  type = string
 }
 
 variable "private_rt_name" {
-  type = map(string)
+  type = string
 }
 
 variable "route_table_cidr_block" {

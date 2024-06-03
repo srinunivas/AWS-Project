@@ -1,3 +1,19 @@
+variable "org_name" {
+  type = string
+}
+
+variable "project_name" {
+  type = string
+}
+
+variable "env" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
 variable "database_cluster" {
   type = object({
     cluster_identifier        = optional(string)
@@ -77,6 +93,6 @@ variable "security_group_name" {
 }
 
 variable "cluster_instance_count" {
-  type = number
+  type    = number
   default = 0
 }

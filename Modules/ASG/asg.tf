@@ -1,6 +1,5 @@
 resource "aws_autoscaling_group" "asg" {
-  #availability_zones = var.asg_availability_zone #["ap-south-1a"]
-  name                = var.asg_name
+  name                = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.asg_name}"
   desired_capacity    = var.asg_desired_capacity
   max_size            = var.asg_max_size
   min_size            = var.asg_min_size
@@ -12,11 +11,9 @@ resource "aws_autoscaling_group" "asg" {
     version = var.launch_template_version
   }
 
-  # Integrate the Auto Scaling Group with the Target Group
   lifecycle {
-    create_before_destroy = true # Ensure the ASG is created before being associated with the target group
+    create_before_destroy = true
   }
 
-  # Associate the ASG with the Target Group
   target_group_arns = var.target_group_arns
 }

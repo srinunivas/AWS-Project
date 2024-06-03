@@ -55,6 +55,10 @@ module "s3_nlb_access_logs" {
   }
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 #-------------------------------------------------------------
@@ -67,7 +71,7 @@ module "network_load_balancer_pub" {
   depends_on = [module.public_ec2_windows1, module.public_ec2_windows2]
 
   network_load_balancer = ({
-    name               = "private-nlb-testing"
+    name               = "n1"
     subnet_ids         = [module.vpc.public_subnet_id_1]
     access_logs_bucket = module.s3_nlb_access_logs.s3_bucket_id
   })
@@ -81,11 +85,15 @@ module "network_load_balancer_pub" {
       listeners = {
         port = 80
       }
-      targets = [module.public_ec2_windows1.instance_id, module.public_ec2_windows2.instance_id] 
+      targets = [module.public_ec2_windows1.instance_id, module.public_ec2_windows2.instance_id]
     }
   }
   tags = local.tags
-  
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
+
 }
 
 output "network_load_balancer_arn" {
@@ -110,12 +118,12 @@ module "network_load_balancer_pri" {
   depends_on = [module.private_ec2_windows1, module.private_ec2_windows2]
 
   network_load_balancer = ({
-    name               = "public-nlb-testing"
-    subnet_ids         = [module.vpc.private_subnet_id_1] 
+    name               = "n2"
+    subnet_ids         = [module.vpc.private_subnet_id_1]
     access_logs_bucket = module.s3_nlb_access_logs.s3_bucket_id
   })
 
-  security_groups = [module.vpc.default_security_group_id] 
+  security_groups = [module.vpc.default_security_group_id]
 
   target_groups_listener = {
     target-group2 = {
@@ -125,9 +133,13 @@ module "network_load_balancer_pri" {
       listeners = {
         port = 80
       }
-      targets =  [module.private_ec2_windows1.instance_id, module.private_ec2_windows2.instance_id] 
+      targets = [module.private_ec2_windows1.instance_id, module.private_ec2_windows2.instance_id]
     }
   }
-  
+
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }

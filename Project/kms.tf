@@ -2,7 +2,6 @@ module "kms-public" {
   source = "../Modules/KMS"
 
   primary_key = {
-    alias                    = "kms-public-001"
     customer_master_key_spec = "SYMMETRIC_DEFAULT"
     deletion_window_in_days  = 7
     description              = "kms-basic"
@@ -12,16 +11,19 @@ module "kms-public" {
     multi_region             = false
   }
 
-  alias = "kms-public-001"
+  alias = "ec2-KMS-compute-001"
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 module "kms-private" {
   source = "../Modules/KMS"
 
   primary_key = {
-    alias                    = "kms-private-001"
     customer_master_key_spec = "SYMMETRIC_DEFAULT"
     deletion_window_in_days  = 7
     description              = "kms-basic"
@@ -31,16 +33,19 @@ module "kms-private" {
     multi_region             = false
   }
 
-  alias = "kms-private-001"
+  alias = "ec2-KMS-compute-002"
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 module "kms-s3" {
   source = "../Modules/KMS"
 
   primary_key = {
-    alias                    = "kms-s3-001"
     customer_master_key_spec = "SYMMETRIC_DEFAULT"
     deletion_window_in_days  = 7
     description              = "kms-basic"
@@ -50,16 +55,19 @@ module "kms-s3" {
     multi_region             = false
   }
 
-  alias = "kms-s3-001"
+  alias = "ec2-KMS-S3-001"
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 module "dsse-kms-s3" {
   source = "../Modules/KMS"
 
   primary_key = {
-    alias                    = "dsse-kms-s3-key-test-001"
     customer_master_key_spec = "SYMMETRIC_DEFAULT"
     deletion_window_in_days  = 7
     description              = "kms-basic"
@@ -69,26 +77,34 @@ module "dsse-kms-s3" {
     multi_region             = false
   }
 
-  alias = "dsse-kms-s3-key-test-001"
+  alias = "ec2-DSSE-KMS-S3-001"
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
-# module "kms-rds" {
-#   source = "../Modules/KMS"
+module "kms-rds" {
+  source = "../Modules/KMS"
 
-#   primary_key = {
-#     alias                    = "kms-rds"
-#     customer_master_key_spec = "SYMMETRIC_DEFAULT"
-#     deletion_window_in_days  = 7
-#     description              = "kms-basic"
-#     enable_key_rotation      = false
-#     is_enabled               = true
-#     key_usage                = "ENCRYPT_DECRYPT"
-#     multi_region             = false
-#   }
+  primary_key = {
+    alias                    = "kms-rds"
+    customer_master_key_spec = "SYMMETRIC_DEFAULT"
+    deletion_window_in_days  = 7
+    description              = "kms-basic"
+    enable_key_rotation      = false
+    is_enabled               = true
+    key_usage                = "ENCRYPT_DECRYPT"
+    multi_region             = false
+  }
 
-#   alias = "kms-rds"
+  alias = "ec2-KMS-RDS-001"
 
-#   tags = local.tags
-# }
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
+}

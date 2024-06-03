@@ -8,37 +8,17 @@ provider "aws" {
 module "vpc" {
   source = "../Modules/VPC"
 
-  vpc_name = {
-    Name = "project-vpc"
-  }
+  vpc_name = "VPC"
   vpc_cidr_block = "172.0.0.0/16"
-  igw_name = {
-    Name = "project-vpc-igw"
-  }
-  public_subnet_name_1 = {
-    Name = "project-vpc-public-subnet-1"
-  }
-  public_subnet_name_2 = {
-    Name = "project-vpc-public-subnet-2"
-  }
-  public_subnet_name_3 = {
-    Name = "project-vpc-public-subnet-3"
-  }
-  private_subnet_name_1 = {
-    Name = "project-vpc-private-subnet-1"
-  }
-  private_subnet_name_2 = {
-    Name = "project-vpc-private-subnet-2"
-  }
-  private_subnet_name_3 = {
-    Name = "project-vpc-private-subnet-3"
-  }
-  public_rt_name = {
-    Name = "project-vpc-public-rt"
-  }
-  private_rt_name = {
-    Name = "project-vpc-private-rt"
-  }
+  igw_name = "IGW"
+  public_subnet_name_1 = "Public-Subnet-001"
+  public_subnet_name_2 = "Public-Subnet-002"
+  public_subnet_name_3 = "Public-Subnet-003"
+  private_subnet_name_1 = "Private-Subnet-001"
+  private_subnet_name_2 = "Private-Subnet-002"
+  private_subnet_name_3 = "Private-Subnet-003"
+  public_rt_name = "Public-RT"
+  private_rt_name = "Private-RT"
   public_subnet_1_cidr_block  = "172.0.1.0/24"
   public_subnet_2_cidr_block  = "172.0.2.0/24"
   public_subnet_3_cidr_block  = "172.0.3.0/24"
@@ -49,16 +29,18 @@ module "vpc" {
   subnet_2_availability_zone  = "us-east-2b"
   subnet_3_availability_zone  = "us-east-2c"
 
-  eip_name = {
-    Name = "project-vpc-eip"
-  }
+  eip_name = "VPC-EIP"
 
-  nat_gateway_name = {
-    Name = "project-vpc-nat"
-  }
+
+  nat_gateway_name = "VPC-NAT"
+
   route_table_cidr_block = "0.0.0.0/0"
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "vpc_id" {

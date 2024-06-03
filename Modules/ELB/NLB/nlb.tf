@@ -1,5 +1,5 @@
 resource "aws_lb" "network_load_balancer" {
-  name               = var.network_load_balancer.name
+  name               = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.network_load_balancer.name}"
   internal           = true
   load_balancer_type = "network"
   subnets            = var.network_load_balancer.subnet_ids
@@ -54,7 +54,7 @@ resource "aws_lb_listener" "nlb_listener" {
 }
 
 resource "aws_lb_target_group_attachment" "nlb_targets" {
-  count = length(local.target_group_attachments)
+  count            = length(local.target_group_attachments)
   target_group_arn = local.target_group_attachments[count.index].target_group_arn
   target_id        = local.target_group_attachments[count.index].target
 }

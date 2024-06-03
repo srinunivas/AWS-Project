@@ -1,7 +1,7 @@
 # Security Group
 
 resource "aws_security_group" "security_group" {
-  name   = var.security_group_name
+  name   = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.security_group_name}"
   vpc_id = var.vpc_id
   tags   = var.tags
 

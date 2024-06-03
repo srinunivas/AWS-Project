@@ -1,8 +1,3 @@
-data "aws_s3_object" "object_file" {
-  bucket = module.s3_pubic_default_kms.s3_bucket_id
-  key    = "PII-sample-data.pdf"
-}
-
 #-------------------------------------------------------------
 #                   Private - EC2 - Linux - No Encryption
 #-------------------------------------------------------------
@@ -11,14 +6,10 @@ module "private_ec2_linux" {
   image_id                    = "ami-0b8b44ec9a8f90422"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = false
-
-  instance_name = {
-    Name = "Private-Instance-Linux"
-  }
+  instance_name = "ec2-pri-webserver-001"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.private_subnet_id_1
   sg_id         = module.vpc.default_security_group_id
-
   key_pair = "ec2-key"
 
   root_block_device = {
@@ -72,6 +63,10 @@ module "private_ec2_linux" {
   EOF
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 
 }
 
@@ -92,22 +87,17 @@ module "public_ec2_linux" {
   image_id                    = "ami-0b8b44ec9a8f90422"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = true
-
-  instance_name = {
-    Name = "Public-Instance-Linux"
-  }
+  instance_name = "ec2-pub-sip-webserver-001"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.public_subnet_id_1
   sg_id         = module.security_group.sg_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = false
-    tags = local.tags
-    volume_size = 40
-    volume_type = "gp2"
+    tags                  = local.tags
+    volume_size           = 40
+    volume_type           = "gp2"
   }
 
   ebs_block_devices = [
@@ -115,17 +105,17 @@ module "public_ec2_linux" {
       delete_on_termination = true
       device_name           = "/dev/sdf"
       encrypted             = false
-      tags = local.tags
-      volume_size = 20
-      volume_type = "gp2" 
+      tags                  = local.tags
+      volume_size           = 20
+      volume_type           = "gp2"
     },
     {
       delete_on_termination = true
       device_name           = "/dev/sdg"
       encrypted             = false
-      tags = local.tags
-      volume_size = 40
-      volume_type = "gp3"
+      tags                  = local.tags
+      volume_size           = 40
+      volume_type           = "gp3"
     }
   ]
 
@@ -152,9 +142,14 @@ mount /dev/xvdf /mnt/ebs
 echo "This is some example data for file1." > /mnt/ebs/Sample.txt 
 wget -O /mnt/ebs/PII-sample-data.pdf "https://dlptest.com/sample-data.pdf"
   EOF
-  tags = local.tags
 
-  depends_on = [ module.s3_pubic_default_kms ]
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
+
+  depends_on = [module.s3_pubic_default_kms]
 }
 
 output "public_ec2_linux_id" {
@@ -174,16 +169,11 @@ module "public_ec2_windows" {
   image_id                    = "ami-02db44a38cfb5d753"
   availability_zone           = "us-east-2a"
   associate_public_ip_address = true
-
-  instance_name = {
-    Name = "Public-Instance-Windows"
-  }
+  instance_name = "ec2-pub-sip-webserver-001"
   instance_type = "t2.micro"
   subnet_id     = module.vpc.public_subnet_id_1
   sg_id         = module.security_group.sg_id
-
   key_pair = "ec2-key"
-
   root_block_device = {
     delete_on_termination = true
     encrypted             = false
@@ -201,7 +191,7 @@ module "public_ec2_windows" {
       encrypted             = true
       tags                  = local.tags
       volume_size           = 20
-      volume_type           = "gp2" 
+      volume_type           = "gp2"
     },
     {
       delete_on_termination = true
@@ -225,6 +215,10 @@ module "public_ec2_windows" {
   EOF
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "public_ec2_windows_id" {

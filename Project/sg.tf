@@ -1,41 +1,3 @@
-# #-------------------------------------------------------------
-# #                  Security Group
-# #-------------------------------------------------------------
-# module "security_group" {
-#   source = "../Modules/SG"
-
-#   security_group_name = "Project-VPC-SG"
-#   vpc_id              = module.vpc.vpc_id
-
-#   ingresses = [
-#     {
-#       description = "Any port"
-#       from_port   = 0
-#       to_port     = 0
-#       protocol    = "-1"
-#       cidr_blocks = ["0.0.0.0/0"]
-#     }
-#   ]
-
-#   egresses = [
-#     {
-#       description = "Any port"
-#       from_port   = 0
-#       to_port     = 0
-#       protocol    = "-1"
-#       cidr_blocks = ["0.0.0.0/0"]
-#     }
-#   ]
-
-#   tags = {
-#     Bu                  = "Take off"
-#     App                 = "dspm"
-#     Env                 = "dev/test/qa"
-#     Owner               = "Dspm"
-#     Data_classification = "private"
-#   }
-# }
-
 #-------------------------------------------------------------
 #                Custom EC2 Security Group
 #-------------------------------------------------------------
@@ -80,6 +42,10 @@ module "security_group" {
   ]
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 output "sg_id" {
@@ -129,4 +95,8 @@ module "rds_security_group" {
   ]
 
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket        = var.bucket_name
+  bucket        = "${var.org_name}-${var.project_name}-${var.env}-${var.region}-${var.bucket_name}"
   force_destroy = var.force_destroy
   tags          = var.tags
 }
@@ -24,14 +24,14 @@ resource "aws_s3_bucket_policy" "policy" {
 }
 
 resource "aws_s3_bucket_versioning" "bucket_version" {
-  count  = var.version_enabled ? 1 : 0
+  count                 = var.version_enabled ? 1 : 0
   bucket                = aws_s3_bucket.bucket.id
   expected_bucket_owner = data.aws_caller_identity.current.account_id
-  mfa = var.mfa_config.your_mfa_config
+  mfa                   = var.mfa_config.your_mfa_config
 
   versioning_configuration {
     status     = var.versioning_status
-    mfa_delete = var.mfa_config.enable_versioning_mfa_delete ? "Enabled" : "Disabled" 
+    mfa_delete = var.mfa_config.enable_versioning_mfa_delete ? "Enabled" : "Disabled"
   }
 }
 
@@ -72,7 +72,7 @@ resource "aws_s3_bucket_acl" "access_control_policy" {
   }
 
   depends_on = [
-     aws_s3_bucket_ownership_controls.ownership_controls,
+    aws_s3_bucket_ownership_controls.ownership_controls,
     aws_s3_bucket_public_access_block.public_access
   ]
 }
@@ -90,43 +90,17 @@ resource "aws_s3_bucket_ownership_controls" "ownership_controls" {
   ]
 }
 
-# resource "aws_s3_object" "object" {
-#   count = var.s3_object.enabled ? 1:0
-#   bucket = aws_s3_bucket.bucket.id
-#   key    = var.s3_object.key
-#   source = var.s3_object.source
-#   acl    = var.s3_object.acl
-#   content_type = var.s3_object.content_type
-#   etag = filemd5(var.s3_object.source)
-# depends_on = [
-#     aws_s3_bucket_ownership_controls.ownership_controls,
-#     aws_s3_bucket_public_access_block.public_access
-#   ]
-# }
-
 locals {
   files_to_process = var.s3_object.enabled ? fileset(var.s3_object.source, "**") : []
 }
 
 resource "aws_s3_object" "upload_multiple_s3_project" {
-  #count = var.s3_object.enabled ? 1:0
-  for_each = { for file in local.files_to_process : file => file } #fileset(var.upload_multiple_s3_project.source, "**/*")
-  bucket = aws_s3_bucket.bucket.id
-  # key    = var.s3_object.key
-  # source = var.s3_object.source
-  acl    = var.s3_object.acl
-  # content_type = var.s3_object.content_type
-  # etag = filemd5(var.s3_object.source)
-  key    = each.key
-  #source = var.s3_object.source
-  #acl    = "public-read"
-  #content_type = var.upload_multiple_s3_project.content_type
-  #etag = filemd5(var.s3_object.source)
-  
-  
-  source = "${var.s3_object.source}/${each.value}"
-  etag   = filemd5("${var.s3_object.source}/${each.value}")
-
+  for_each = { for file in local.files_to_process : file => file }
+  bucket   = aws_s3_bucket.bucket.id
+  acl      = var.s3_object.acl
+  key      = each.key
+  source   = "${var.s3_object.source}/${each.value}"
+  etag     = filemd5("${var.s3_object.source}/${each.value}")
   depends_on = [
     aws_s3_bucket_ownership_controls.ownership_controls,
     aws_s3_bucket_public_access_block.public_access
@@ -134,15 +108,15 @@ resource "aws_s3_object" "upload_multiple_s3_project" {
 }
 
 resource "aws_s3_bucket_website_configuration" "example" {
-  count = var.website_configuration.enabled ? 1:0
+  count  = var.website_configuration.enabled ? 1 : 0
   bucket = aws_s3_bucket.bucket.id
 
   index_document {
-    suffix = var.website_configuration.index_document#"index.html"
+    suffix = var.website_configuration.index_document
   }
 
   error_document {
-    key = var.website_configuration.error_document #"error.html"
+    key = var.website_configuration.error_document
   }
 
 }

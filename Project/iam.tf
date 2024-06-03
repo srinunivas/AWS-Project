@@ -8,7 +8,11 @@ module "iam-user" {
   iam_user_name = "admin-user"
   user_path     = "/"
   policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
-  tags          = local.tags
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 #----------------------------------------------------------------------------------------
@@ -33,7 +37,11 @@ module "iam-role" {
     ]
   })
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-  tags       = local.tags
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 #----------------------------------------------------------------------------------------
@@ -57,4 +65,8 @@ module "iam-policy" {
     ]
   })
   tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }

@@ -7,10 +7,11 @@ module "aws_rds_pgsql_1" {
   database_subnet_ids = [module.vpc.public_subnet_id_1, module.vpc.public_subnet_id_2]
 
   database_instance = {
-    name                                = "rdspgsqlpublicdb"
+    name                                = "rds-pgsqlpublicdb"
     engine_type                         = "postgres"
     engine_version                      = "16.1"
     instance_class                      = "db.t3.micro"
+    db_name                             = "rdspgsqlpublicdb"
     storage                             = 20
     database_listen_port                = "5432"
     username                            = "testuser"
@@ -30,7 +31,7 @@ module "aws_rds_pgsql_1" {
     provisioned_iops                    = 0
     max_allocated_storage               = 0
     publicly_accessible                 = false
-    storage_encrypted                   = true 
+    storage_encrypted                   = true
   }
 
   database_parameter_family = "postgres15"
@@ -42,7 +43,7 @@ module "aws_rds_pgsql_1" {
     }
   }
 
-  security_group_name = "rdspgsqlpublictestdb-SG"
+  security_group_name = "rds-pgsqlpublicdb-sg"
   ingresses = [
     {
       description = "Any port"
@@ -63,13 +64,11 @@ module "aws_rds_pgsql_1" {
     }
   ]
 
-  tags = {
-    Bu                  = "Take off"
-    App                 = "dspm"
-    Env                 = "dev/test/qa"
-    Owner               = "Dspm"
-    Data_classification = "private"
-  }
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
 #-------------------------------------------------------------
@@ -81,10 +80,11 @@ module "aws_rds_pgsql_2" {
   database_subnet_ids = [module.vpc.private_subnet_id_1, module.vpc.private_subnet_id_2]
 
   database_instance = {
-    name                                = "rdspgsqlprivatedb"
+    name                                = "rds-pgsalprivatedb"
     engine_type                         = "postgres"
     engine_version                      = "16.1"
     instance_class                      = "db.t3.micro"
+    db_name                             = "rdspgsalprivatedb"
     storage                             = 20
     database_listen_port                = "5432"
     username                            = "testuser"
@@ -104,7 +104,7 @@ module "aws_rds_pgsql_2" {
     provisioned_iops                    = 0
     max_allocated_storage               = 0
     publicly_accessible                 = false
-    storage_encrypted                   = true 
+    storage_encrypted                   = true
   }
 
   database_parameter_family = "postgres15"
@@ -116,7 +116,7 @@ module "aws_rds_pgsql_2" {
     }
   }
 
-  security_group_name = "rdspgsqlprivatetestdb-SG"
+  security_group_name = "rds-pgsalprivatedb-sg"
   ingresses = [
     {
       description = "Any port"
@@ -137,12 +137,10 @@ module "aws_rds_pgsql_2" {
     }
   ]
 
-  tags = {
-    Bu                  = "Take off"
-    App                 = "dspm"
-    Env                 = "dev/test/qa"
-    Owner               = "Dspm"
-    Data_classification = "private"
-  }
+  tags = local.tags
+  org_name = "safemarch"
+  project_name = "demo"
+  env = "prod"
+  region = "us-east-2"
 }
 
